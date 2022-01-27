@@ -9,6 +9,7 @@ import Filter from './components/Filter/Filter'
 import Episodes from './Pages/Episodes'
 import Location from './Pages/Location'
 import Navbar from './components/Navbar/Navbar'
+import CardDetails from "./components/Card/CardDetail";
 
 function Home() {
   let [fetchedData, setFetchedData] = useState([])
@@ -49,7 +50,7 @@ function Home() {
           />
           <div className="col-lg-8 col-12">
             <div className="row">
-              <Card results={results} />
+              <Card page='/' results={results} />
             </div>
           </div>
         </div>
@@ -71,6 +72,9 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/episodes' element={<Episodes />} />
           <Route path='/location' element={<Location />} />
+          <Route path='/:id' element={<CardDetails />} />
+          <Route path='/episodes/:id' element={<CardDetails />} />
+          <Route path='/location/:id' element={<CardDetails />} />
         </Routes>
       </div>
     </Router>

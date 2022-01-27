@@ -1,58 +1,57 @@
-import styles from './Card.module.scss'
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-export default function Card({ results }) {
-    let display;
+const CardDetails = () => {
+    let { id } = useParams();
 
-    if (results) {
-        display = results.map((result) => {
-            let { id, image, name, status, location } = result
-            return (
-                <div
-                    key={id}
-                    className='col-lg-4 col-md-6 col-sm-6 col-12 mb-4 position-relative text-dark'
-                >
-                    <div className={`${styles.card} d-flex flex-column justify-content-center`}>
-                        <img className={`${styles.img} img-fluid`} src={image} alt='' />
-                        <div className={`${styles.content}`}>
-                            <div className='fs-5 fw-bold mb-4'>{name}</div>
-                            <div>
-                                <div className='fs-6 fw-normal'>Last Location</div>
-                                <div className='fs-5'>{location.name}</div>
-                                {
-                                    (() => {
-                                        if (status === 'Dead') {
-                                            return (
-                                                <div className={`${styles.badge} position-absolute badge bg-danger`}>
-                                                    {status}
-                                                </div>
-                                            )
-                                        } else if (status === 'Alive') {
-                                            return (
-                                                <div className={`${styles.badge} position-absolute badge bg-success`}>
-                                                    {status}
-                                                </div>
-                                            )
-                                        } else {
-                                            return (
-                                                <div className={`${styles.badge} position-absolute badge bg-secondary`}>
-                                                    {status}
-                                                </div>
-                                            )
-                                        }
-                                    })()
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )
-        })
-    }
-    else {
-        display = 'No Characters Found :/'
-    }
+    let [fetchedData, updateFetchedData] = useState([]);
+    let { name, location, origin, gender, image, status, species } = fetchedData;
+
+    let api = `https://rickandmortyapi.com/api/character/${id}`;
+
+    useEffect(() => {
+        (async function () {
+            let data = await fetch(api).then((res) => res.json());
+            updateFetchedData(data);
+        })();
+    }, [api]);
 
     return (
-        <>{display}</>
-    )
-}
+        <div className="container d-flex justify-content-center mb-5">
+            <div className="d-flex flex-column gap-3">
+                <h1 className="text-center">{name}</h1>
+
+                <img className="img-fluid" src={image} alt="" />
+                {(() => {
+                    if (status === "Dead") {
+                        return <div className="badge bg-danger fs-5">{status}</div>;
+                    } else if (status === "Alive") {
+                        return <div className=" badge bg-success fs-5">{status}</div>;
+                    } else {
+                        return <div className="badge bg-secondary fs-5">{status}</div>;
+                    }
+                })()}
+                <div className="content">
+                    <div className="">
+                        <span className="fw-bold">Gender : </span>
+                        {gender}
+                    </div>
+                    <div className="">
+                        <span className="fw-bold">Location: </span>
+                        {location?.name}
+                    </div>
+                    <div className="">
+                        <span className="fw-bold">Origin: </span>
+                        {origin?.name}
+                    </div>
+                    <div className="">
+                        <span className="fw-bold">Species: </span>
+                        {species}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default CardDetails;
