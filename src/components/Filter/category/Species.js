@@ -5,7 +5,7 @@ export default function Species({
 }) {
     let species = [
         'Human', 'Alien', 'Humanoid',
-        'Poopybutthole', 'Mythologica', 'Unknown',
+        'Poopybutthole', 'Mythological', 'Unknown',
         'Animal', 'Disease', 'Robot', 'Cronenberg', 'Planet'
     ]
 
